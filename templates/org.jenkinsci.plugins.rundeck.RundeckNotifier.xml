@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<org.jenkinsci.plugins.rundeck.RundeckNotifier_-RundeckDescriptor>
+  <helpRedirect/>
+  <rundeckInstance>
+    <url>${URL}</url>
+    <login>${USERNAME}</login>
+    <password>${PASSWORD}</password>
+  </rundeckInstance>
+</org.jenkinsci.plugins.rundeck.RundeckNotifier_-RundeckDescriptor>
