@@ -5,13 +5,17 @@ Rerun module to manage Jenkins installation, configuration and operations
 
 <pre>
 [anthony@centos62-dukesbank-rerun jenkins]$ rerun jenkins
-Available commands in module, "/home/anthony/src/dtolabs/dukesbank-example5/src/rerun/modules/jenkins":
+Available commands in module, "/home/anthony/src/rerun-modules/modules/jenkins":
 configure-rundeck-plugin: "Configure the Jenkins Rundeck plugin"
    [ --password|-p <admin>]: "Rundeck password"
    [ --restart|-r <false>]: "Whether or not to immediately restart Jenkins"
    [ --url|-u <http://localhost:4440>]: "Rundeck URL"
    [ --username|-u <admin>]: "Rundeck username"
 create-job: "Create a new job using the web API"
+    --file|-f <>: "Configuration XML file that defines the job"
+    --jobname|-j <>: "Name of the job to create"
+   [ --url|-u <http://localhost:8080>]: "Jenkins server URL"
+get-job: "Get a job's configuration file using the web API"
     --file|-f <>: "Configuration XML file that defines the job"
     --jobname|-j <>: "Name of the job to create"
    [ --url|-u <http://localhost:8080>]: "Jenkins server URL"
@@ -29,3 +33,5 @@ update-job: "Update an existing job using the web API"
     --jobname|-j <>: "Name of the job to create"
    [ --url|-u <http://localhost:8080>]: "Jenkins server URL"
 </pre>
+
+Note that jenkins:get-job relies on xmlstarlet(1) (which is available from [EPEL](http://fedoraproject.org/wiki/EPEL)).
