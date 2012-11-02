@@ -3,3 +3,4 @@
 NAME=restart
 DESCRIPTION="Restart Jenkins"
 
+OPTIONS=

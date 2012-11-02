@@ -3,3 +3,4 @@
 NAME=create-job
 DESCRIPTION="Create a new job using the web API"
 
+OPTIONS="file jobname url"

@@ -3,3 +3,4 @@
 NAME=stop
 DESCRIPTION="Stop Jenkins"
 
+OPTIONS=

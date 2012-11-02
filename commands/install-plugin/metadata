@@ -3,3 +3,4 @@
 NAME=install-plugin
 DESCRIPTION="Install plugin from the web"
 
+OPTIONS="name restart url version"

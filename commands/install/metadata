@@ -3,3 +3,4 @@
 NAME=install
 DESCRIPTION="Install Jenkins on RedHat distributions using Yum"
 
+OPTIONS=

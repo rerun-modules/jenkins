@@ -3,3 +3,4 @@
 NAME=configure-rundeck-plugin
 DESCRIPTION="Configure the Jenkins Rundeck plugin"
 
+OPTIONS="password restart url username"
