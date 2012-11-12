@@ -2,6 +2,11 @@
 # common shell functions for jenkins commands
 #
 
+# Read rerun's public functions
+. $RERUN || {
+    echo >&2 "ERROR: Failed sourcing rerun function library: \"$RERUN\""
+    return 1
+}
 
 # __Colorizing functions__
 

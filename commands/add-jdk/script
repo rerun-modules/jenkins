@@ -32,6 +32,50 @@ set -o nounset -o pipefail
 # Your implementation goes here.
 # ------------------------------
 
+if [ ! -f "${CONFIG_FILE}" ]
+then
+   rerun_die "configuration file ${CONFIG_FILE} does not appear to exist"
+   exit 1
+fi
+
+XMLSTARLET=$(which xmlstarlet)
+if [ ! -x $XMLSTARLET ]
+then
+   rerun_die "cannot find xmlstarlet"
+   exit 1
+fi
+
+if ! $XMLSTARLET fo "${CONFIG_FILE}" > /dev/null
+then
+   rerun_die "configuration file ${CONFIG_FILE} does not appear to be a valid xml file"
+   exit 1
+fi
+
+if $XMLSTARLET sel  -t -m "/hudson/jdks/jdk[name='${JDK_NAME}']/name"  -v . "${CONFIG_FILE}" >/dev/null
+then
+   echo "WARNING, /hudson/jdks/jdk/${JDK_NAME} appears to exist, doing nothing" 1>&2
+   exit 0
+fi
+
+xmlTmp=$(mktemp)
+
+$XMLSTARLET ed -s /hudson/jdks -t elem -n jdkTMP -v "" \
+    -s //jdkTMP -t elem -n name -v "${JDK_NAME}" \
+    -s //jdkTMP -t elem -n home -v "${JDK_HOME}" \
+    -s //jdkTMP -t elem -n properties -v '' \
+    -r //jdkTMP -v jdk ${CONFIG_FILE} | $XMLSTARLET fo > ${xmlTmp}
+
+if ! cmp -s ${xmlTmp} ${CONFIG_FILE}
+then
+   if ! cp ${xmlTmp} ${CONFIG_FILE}
+   then
+      echo "unable to overwrite ${CONFIG_FILE}" 1>&2
+      exit 1
+   fi
+else
+   echo "WARNING, ${CONFIG_FILE} appears unchanged, will not overwrite"
+fi
+
 exit $?
 
 # Done
