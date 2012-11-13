@@ -3,4 +3,4 @@
 # Mon Nov 12 11:36:21 PST 2012
 NAME=add-maven
 DESCRIPTION="Adds a Maven installation to the Jenkins configuration"
-OPTIONS="maven-name maven-home reload jenkins-home jenkins-url"
+OPTIONS="maven-name maven-home jenkins-home restart"
