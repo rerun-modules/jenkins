@@ -51,30 +51,49 @@ then
    exit 1
 fi
 
+xmlTmp1=$(mktemp)
+xmlTmp2=$(mktemp)
+
+#
+# check if the specific jdk name exists already
+# if it exists then DELETE it and re-CREATE it.
+#
 if $XMLSTARLET sel  -t -m "/hudson/jdks/jdk[name='${JDK_NAME}']/name"  -v . "${CONFIG_FILE}" >/dev/null
 then
-   echo "WARNING, /hudson/jdks/jdk/${JDK_NAME} appears to exist, doing nothing" 1>&2
-   exit 0
+   #echo "WARNING, /hudson/jdks/jdk/${JDK_NAME} appears to exist, re-creating" 1>&2
+   $XMLSTARLET   ed -d "/hudson/jdks/jdk[name='${JDK_NAME}']/../jdk" "${CONFIG_FILE}" \
+   | $XMLSTARLET fo > "${xmlTmp1}"
+else
+   cp "${CONFIG_FILE}" "${xmlTmp1}"
 fi
 
-xmlTmp=$(mktemp)
 
+#
+# CREATE a new /hudson/jdks/jdk[name=${JDK_NAME}]
+# create a temporary element "jdkTMP" to differentiate it from "jdk" element
+# and rename it back to "jdk" after the new element and sub-elements have been created
+#
 $XMLSTARLET ed -s /hudson/jdks -t elem -n jdkTMP -v "" \
     -s //jdkTMP -t elem -n name -v "${JDK_NAME}" \
     -s //jdkTMP -t elem -n home -v "${JDK_HOME}" \
     -s //jdkTMP -t elem -n properties -v '' \
-    -r //jdkTMP -v jdk ${CONFIG_FILE} | $XMLSTARLET fo > ${xmlTmp}
+    -r //jdkTMP -v jdk ${xmlTmp1} | $XMLSTARLET fo > ${xmlTmp2}
 
-if ! cmp -s ${xmlTmp} ${CONFIG_FILE}
+#
+# if the resulting transformation does not result in any change, do nothing.
+#
+if ! cmp -s "${xmlTmp2}" "${CONFIG_FILE}"
 then
-   if ! cp ${xmlTmp} ${CONFIG_FILE}
+   if ! sudo cp "${xmlTmp2}" "${CONFIG_FILE}"
    then
       echo "unable to overwrite ${CONFIG_FILE}" 1>&2
       exit 1
    fi
 else
-   echo "WARNING, ${CONFIG_FILE} appears unchanged, will not overwrite"
+   echo "WARNING, ${CONFIG_FILE} appears unchanged, will not overwrite" 1>&2
 fi
+
+rm -f "${xmlTmp1}" "${xmlTmp2}"
 
 exit $?
 
