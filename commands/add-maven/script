@@ -2,10 +2,10 @@
 #
 #/ command: jenkins:add-maven: "Adds a Maven installation to the Jenkins configuration"
 #
-#/ usage: rerun jenkins:add-maven [options]
+#/ usage: rerun jenkins:add-maven [ --maven-name|-m <maven>] [ --maven-home|-m </usr/share/maven>] [ --jenkins-home </var/lib/jenkins>] [ --restart <false>] 
 #
 #/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option variables: 
+#/ option variables: MAVEN_NAME MAVEN_HOME JENKINS_HOME RESTART
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
@@ -31,6 +31,13 @@ set -o nounset -o pipefail
 # ------------------------------
 # Your implementation goes here.
 # ------------------------------
+
+sed -e "s+\${MAVEN_NAME}+${MAVEN_NAME}+" -e "s+\${MAVEN_HOME}+${MAVEN_HOME}+" $RERUN_MODULE_DIR/templates/hudson.tasks.Maven.xml | sudo -u jenkins /bin/sh -c "cat > ${JENKINS_HOME}/hudson.tasks.Maven.xml"
+
+if [[ "${RESTART}" = "true" ]]
+then
+  rerun jenkins:restart
+fi
 
 exit $?
 

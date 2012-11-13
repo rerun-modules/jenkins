@@ -12,5 +12,21 @@
 describe "add-maven"
 
 it_runs_without_arguments() {
+    rerun jenkins:start
     rerun jenkins:add-maven
+    rerun jenkins:stop
+}
+
+it_runs_with_restart_option() {
+    rerun jenkins:start
+    rerun jenkins:add-maven --restart true
+    rerun jenkins:stop
+}
+
+it_can_create_a_maven_job() {
+    rerun jenkins:start
+    rerun jenkins:delete-job --jobname rerun-maven-test --force true
+    rerun jenkins:create-job --jobname rerun-maven-test --file $RERUN_MODULES/jenkins/examples/jobs/rerun-maven-test/config.xml
+    rerun jenkins:delete-job --jobname rerun-maven-test 
+    rerun jenkins:stop
 }

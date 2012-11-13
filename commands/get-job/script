@@ -1,23 +1,31 @@
 #!/usr/bin/env bash
 #
-#/ command: jenkins:get-job: ""Get a job's configuration file using the web API""
+#/ command: jenkins:get-job: "Get a job's configuration file using the web API"
 #
-#/ usage: rerun jenkins:get-job  --file|-f <>  --jobname|-j <> [ --jenkins-url|-u <http://localhost:8080>] 
+#/ usage: rerun jenkins:get-job  --file|-f <>  --jobname <> [ --jenkins-url <http://localhost:8080>]
 #
-#/ variables: FILE JOBNAME JENKINS_URL
+#/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option variables: FILE JOBNAME JENKINS_URL JENKINS_URL
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
-  echo >&2 "Failed loading function library" ; exit 1 ; 
+  echo >&2 "Failed loading function library." ; exit 1 ; 
 }
 
 # Parse the command options.
-[ -r $RERUN_MODULE_DIR/commands/get-job/options.sh ] && {
-  . $RERUN_MODULE_DIR/commands/get-job/options.sh || exit 2 ;
+[[ -r $RERUN_MODULE_DIR/commands/get-job/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/get-job/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
 }
 
-# Exit immediately upon non-zero exit. See [set](http://ss64.com/bash/set.html)
-set -e -o pipefail
+
+# Error handling
+# ---------------
+# * Trap calls `rerun_die` with standard message.
+# * Exit upon command errors or accessing unset variables.
+#   * See [set](http://ss64.com/bash/set.html)
+trap 'rerun_die "*** command failed: jenkins:get-job. ***"' ERR
+set -o nounset -o pipefail
 
 # ------------------------------
 # Your implementation goes here.
