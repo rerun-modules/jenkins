@@ -35,20 +35,17 @@ set -o nounset -o pipefail
 if [ ! -f "${CONFIG_FILE}" ]
 then
    rerun_die "configuration file ${CONFIG_FILE} does not appear to exist"
-   exit 1
 fi
 
 XMLSTARLET=$(which xmlstarlet)
 if [ ! -x $XMLSTARLET ]
 then
    rerun_die "cannot find xmlstarlet"
-   exit 1
 fi
 
 if ! $XMLSTARLET fo "${CONFIG_FILE}" > /dev/null
 then
    rerun_die "configuration file ${CONFIG_FILE} does not appear to be a valid xml file"
-   exit 1
 fi
 
 xmlTmp1=$(mktemp)
