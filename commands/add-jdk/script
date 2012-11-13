@@ -2,10 +2,10 @@
 #
 #/ command: jenkins:add-jdk: "Adds a JDK installation to the Jenkins configuration"
 #
-#/ usage: rerun jenkins:add-jdk [options]
+#/ usage: rerun jenkins:add-jdk [ --jdk-name|-j <java-sdk>] [ --jdk-home|-j </etc/alternatives/java_sdk>] [ --jenkins-home </var/lib/jenkins>] 
 #
 #/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option variables: 
+#/ option variables: JDK_NAME JDK_HOME JENKINS_HOME
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
@@ -32,9 +32,9 @@ set -o nounset -o pipefail
 # Your implementation goes here.
 # ------------------------------
 
-if [ ! -f "${CONFIG_FILE}" ]
+if [ ! -f "${JENKINS_HOME}/config.xml" ]
 then
-   rerun_die "configuration file ${CONFIG_FILE} does not appear to exist"
+   rerun_die "configuration file ${JENKINS_HOME}/config.xml does not appear to exist"
 fi
 
 XMLSTARLET=$(which xmlstarlet)
@@ -43,9 +43,9 @@ then
    rerun_die "cannot find xmlstarlet"
 fi
 
-if ! $XMLSTARLET fo "${CONFIG_FILE}" > /dev/null
+if ! $XMLSTARLET fo "${JENKINS_HOME}/config.xml" > /dev/null
 then
-   rerun_die "configuration file ${CONFIG_FILE} does not appear to be a valid xml file"
+   rerun_die "configuration file ${JENKINS_HOME}/config.xml does not appear to be a valid xml file"
 fi
 
 xmlTmp1=$(mktemp)
@@ -55,13 +55,13 @@ xmlTmp2=$(mktemp)
 # check if the specific jdk name exists already
 # if it exists then DELETE it and re-CREATE it.
 #
-if $XMLSTARLET sel  -t -m "/hudson/jdks/jdk[name='${JDK_NAME}']/name"  -v . "${CONFIG_FILE}" >/dev/null
+if $XMLSTARLET sel  -t -m "/hudson/jdks/jdk[name='${JDK_NAME}']/name"  -v . "${JENKINS_HOME}/config.xml" >/dev/null
 then
    #echo "WARNING, /hudson/jdks/jdk/${JDK_NAME} appears to exist, re-creating" 1>&2
-   $XMLSTARLET   ed -d "/hudson/jdks/jdk[name='${JDK_NAME}']/../jdk" "${CONFIG_FILE}" \
+   $XMLSTARLET   ed -d "/hudson/jdks/jdk[name='${JDK_NAME}']/../jdk" "${JENKINS_HOME}/config.xml" \
    | $XMLSTARLET fo > "${xmlTmp1}"
 else
-   cp "${CONFIG_FILE}" "${xmlTmp1}"
+   cp "${JENKINS_HOME}/config.xml" "${xmlTmp1}"
 fi
 
 
@@ -79,15 +79,15 @@ $XMLSTARLET ed -s /hudson/jdks -t elem -n jdkTMP -v "" \
 #
 # if the resulting transformation does not result in any change, do nothing.
 #
-if ! cmp -s "${xmlTmp2}" "${CONFIG_FILE}"
+if ! cmp -s "${xmlTmp2}" "${JENKINS_HOME}/config.xml"
 then
-   if ! sudo cp "${xmlTmp2}" "${CONFIG_FILE}"
+   if ! sudo cp "${xmlTmp2}" "${JENKINS_HOME}/config.xml"
    then
-      echo "unable to overwrite ${CONFIG_FILE}" 1>&2
+      echo "unable to overwrite ${JENKINS_HOME}/config.xml" 1>&2
       exit 1
    fi
 else
-   echo "WARNING, ${CONFIG_FILE} appears unchanged, will not overwrite" 1>&2
+   echo "WARNING, ${JENKINS_HOME}/config.xml appears unchanged, will not overwrite" 1>&2
 fi
 
 rm -f "${xmlTmp1}" "${xmlTmp2}"
