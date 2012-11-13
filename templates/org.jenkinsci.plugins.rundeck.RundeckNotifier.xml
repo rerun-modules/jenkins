@@ -2,8 +2,8 @@
 <org.jenkinsci.plugins.rundeck.RundeckNotifier_-RundeckDescriptor>
   <helpRedirect/>
   <rundeckInstance>
-    <url>${URL}</url>
-    <login>${USERNAME}</login>
-    <password>${PASSWORD}</password>
+    <url>${RUNDECK_URL}</url>
+    <login>${RUNDECK_USERNAME}</login>
+    <password>${RUNDECK_PASSWORD}</password>
   </rundeckInstance>
 </org.jenkinsci.plugins.rundeck.RundeckNotifier_-RundeckDescriptor>

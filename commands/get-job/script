@@ -2,9 +2,9 @@
 #
 #/ command: jenkins:get-job: ""Get a job's configuration file using the web API""
 #
-#/ usage: rerun jenkins:get-job  --file|-f <>  --jobname|-j <> [ --url|-u <http://localhost:8080>] 
+#/ usage: rerun jenkins:get-job  --file|-f <>  --jobname|-j <> [ --jenkins-url|-u <http://localhost:8080>] 
 #
-#/ variables: FILE JOBNAME URL
+#/ variables: FILE JOBNAME JENKINS_URL
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
@@ -23,7 +23,7 @@ set -e -o pipefail
 # Your implementation goes here.
 # ------------------------------
 
-curl -fs  "${URL}/job/${JOBNAME}/config.xml" | xmlstarlet fo > ${FILE}
+curl -fs  "${JENKINS_URL}/job/${JOBNAME}/config.xml" | xmlstarlet fo > ${FILE}
 
 exit $?
 

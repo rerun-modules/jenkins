@@ -2,22 +2,68 @@
 #
 #/ command: jenkins:start: "Start Jenkins"
 #
-#/ usage: rerun jenkins:start [options]
+#/ usage: rerun jenkins:start [ --jenkins-log|-j </var/log/jenkins/jenkins.log>] [ --count|-c <60>] 
 #
-#/ variables: 
+#/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option variables: JENKINS_LOG COUNT
 
 # Read module function library.
-source $RERUN_MODULE_DIR/lib/functions.sh || { echo "Failed loading function library" >&2 ; exit 1 ; }
-
-# Parse the command options.
-[ -r $RERUN_MODULE_DIR/commands/start/options.sh ] && {
-  source $RERUN_MODULE_DIR/commands/start/options.sh || exit 2 ;
+. $RERUN_MODULE_DIR/lib/functions.sh || { 
+  echo >&2 "Failed loading function library." ; exit 1 ; 
 }
 
-# Exit immediately upon non-zero exit. See [set](http://ss64.com/bash/set.html)
-set -e
+# Parse the command options.
+[[ -r $RERUN_MODULE_DIR/commands/start/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/start/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
+}
 
-sudo service jenkins start
+
+# Error handling
+# ---------------
+# * Trap calls `rerun_die` with standard message.
+# * Exit upon command errors or accessing unset variables.
+#   * See [set](http://ss64.com/bash/set.html)
+trap 'rerun_die "*** command failed: jenkins:start. ***"' ERR
+set -o nounset -o pipefail
+
+
+# ------------------------------
+# Your implementation goes here.
+# ------------------------------
+
+if ! rerun jenkins:status
+then
+  #
+  # Start Jenkins:
+  #
+  sudo /sbin/service jenkins start
+
+  #
+  # Wait for the log file to exist:
+  #
+  count=0
+  while [[ $count -lt $COUNT ]]
+  do
+    if sudo test -e $JENKINS_LOG
+    then
+      break
+    fi
+
+    sleep $INTERVAL
+    count=$((count+1))
+  done
+
+  if [[ $count -eq $COUNT ]]
+  then
+    exit 1
+  fi
+
+  #
+  # Wait for the startup message to appear or timeout:
+  #
+  timeout $((INTERVAL*COUNT)) grep -q '^INFO: Jenkins is fully up and running' <(sudo tail -n 0 -f $JENKINS_LOG)
+fi
 
 exit $?
 

@@ -1,29 +1,37 @@
 #!/usr/bin/env bash
 #
-#/ command: jenkins:configure-rundeck-plugin: ""Configure the Jenkins Rundeck plugin""
+#/ command: jenkins:configure-rundeck-plugin: "Configure the Jenkins Rundeck plugin"
 #
-#/ usage: rerun jenkins:configure-rundeck-plugin [ --password|-p <admin>] [ --restart|-r <false>] [ --url|-u <http://localhost:4440>] [ --username|-u <admin>] 
+#/ usage: rerun jenkins:configure-rundeck-plugin [options]
 #
-#/ variables: PASSWORD RESTART URL USERNAME
+#/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option variables: 
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
-  echo >&2 "Failed loading function library" ; exit 1 ; 
+  echo >&2 "Failed loading function library." ; exit 1 ; 
 }
 
 # Parse the command options.
-[ -r $RERUN_MODULE_DIR/commands/configure-rundeck-plugin/options.sh ] && {
-  . $RERUN_MODULE_DIR/commands/configure-rundeck-plugin/options.sh || exit 2 ;
+[[ -r $RERUN_MODULE_DIR/commands/configure-rundeck-plugin/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/configure-rundeck-plugin/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
 }
 
-# Exit immediately upon non-zero exit. See [set](http://ss64.com/bash/set.html)
-set -e
+
+# Error handling
+# ---------------
+# * Trap calls `rerun_die` with standard message.
+# * Exit upon command errors or accessing unset variables.
+#   * See [set](http://ss64.com/bash/set.html)
+trap 'rerun_die "*** command failed: jenkins:configure-rundeck-plugin. ***"' ERR
+set -o nounset -o pipefail
 
 # ------------------------------
 # Your implementation goes here.
 # ------------------------------
 
-sed -e "s+\${URL}+${URL}+" -e "s+\${USERNAME}+${USERNAME}+" -e "s+\${PASSWORD}+${PASSWORD}+" $RERUN_MODULE_DIR/templates/org.jenkinsci.plugins.rundeck.RundeckNotifier.xml | sudo -u jenkins /bin/sh -c "cat > /var/lib/jenkins/org.jenkinsci.plugins.rundeck.RundeckNotifier.xml"
+sed -e "s+\${RUNDECK_URL}+${RUNDECK_URL}+" -e "s+\${RUNDECK_USERNAME}+${RUNDECK_USERNAME}+" -e "s+\${RUNDECK_PASSWORD}+${RUNDECK_PASSWORD}+" $RERUN_MODULE_DIR/templates/org.jenkinsci.plugins.rundeck.RundeckNotifier.xml | sudo -u jenkins /bin/sh -c "cat > ${JENKINS_HOME}/org.jenkinsci.plugins.rundeck.RundeckNotifier.xml"
 
 if [[ "${RESTART}" = "true" ]]
 then

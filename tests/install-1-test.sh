@@ -6,13 +6,6 @@
 #     rerun stubbs:test -m jenkins -c install
 #
 
-# Helpers
-# ------------
-
-rerun() {
-    command $RERUN -M $RERUN_MODULES "$@"
-}
-
 # The Plan
 # --------
 

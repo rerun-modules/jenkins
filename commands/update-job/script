@@ -2,7 +2,7 @@
 #
 #/ command: jenkins:update-job: ""Update an existing job using the web API""
 #
-#/ usage: rerun jenkins:update-job  --file|-f <>  --jobname|-j <> [ --url|-u <http://localhost:8080/createItem>] 
+#/ usage: rerun jenkins:update-job  --file|-f <>  --jobname|-j <> [ --jenkins-url|-u <http://localhost:8080/createItem>] 
 #
 #/ variables: FILE JOBNAME URL
 

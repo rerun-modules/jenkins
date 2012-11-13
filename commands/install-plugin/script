@@ -1,31 +1,43 @@
 #!/usr/bin/env bash
 #
-#/ command: jenkins:install-plugin: ""Install plugin from the web""
+#/ command: jenkins:install-plugin: "Install plugin from the web"
 #
-#/ usage: rerun jenkins:install-plugin  --name|-n <> [ --restart|-r <false>] [ --url|-u <http://updates.jenkins-ci.org>] [ --version|-v <latest>] 
+#/ usage: rerun jenkins:install-plugin [ --restart|-r <false>] [ --jenkins-home|-j </var/lib/jenkins>] [ --plugin-url|-p <http://updates.jenkins-ci.org>]  --plugin-name|-p <> [ --plugin-version|-p <latest>] [ --jenkins-url|-j <http://localhost:8080>] 
 #
-#/ variables: NAME RESTART URL VERSION
+#/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option variables: RESTART JENKINS_HOME PLUGIN_URL PLUGIN_NAME PLUGIN_VERSION JENKINS_URL
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
-  echo >&2 "Failed loading function library" ; exit 1 ; 
+  echo >&2 "Failed loading function library." ; exit 1 ; 
 }
+
+# Error handling
+# ---------------
+# * Trap calls `rerun_die` with standard message.
+# * Exit upon command errors or accessing unset variables.
+#   * See [set](http://ss64.com/bash/set.html)
+trap 'rerun_die "*** command failed: jenkins:install-plugin/. ***"' ERR
+set -o nounset -o pipefail
 
 # Parse the command options.
-[ -r $RERUN_MODULE_DIR/commands/install-plugin/options.sh ] && {
-  . $RERUN_MODULE_DIR/commands/install-plugin/options.sh || exit 2 ;
+[[ -r $RERUN_MODULE_DIR/commands/install-plugin/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/install-plugin/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
 }
-
-# Exit immediately upon non-zero exit. See [set](http://ss64.com/bash/set.html)
-set -e
 
 # ------------------------------
 # Your implementation goes here.
 # ------------------------------
 
-cd /var/lib/jenkins/plugins
+if [[ -d "${JENKINS_HOME}/plugins" ]]
+then
+  cd ${JENKINS_HOME}/plugins
+else
+  exit 1
+fi
 
-sudo -u jenkins wget -O ${NAME}.hpi ${URL}/download/plugins/${NAME}/${VERSION}/${NAME}.hpi
+sudo -u jenkins wget -O ${PLUGIN_NAME}.hpi ${PLUGIN_URL}/download/plugins/${PLUGIN_NAME}/${PLUGIN_VERSION}/${PLUGIN_NAME}.hpi
 
 if [[ "${RESTART}" = "true" ]]
 then

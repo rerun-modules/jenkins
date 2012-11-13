@@ -6,18 +6,15 @@
 #     rerun stubbs:test -m jenkins -p restart
 #
 
-# Helpers
-# ------------
-
-rerun() {
-    command $RERUN -M $RERUN_MODULES "$@"
-}
-
 # The Plan
 # --------
 
 describe "restart"
 
 it_runs_without_arguments() {
-    rerun jenkins:restart
+    if /sbin/chkconfig jenkins
+    then
+      rerun jenkins:restart
+      rerun jenkins:stop
+    fi
 }

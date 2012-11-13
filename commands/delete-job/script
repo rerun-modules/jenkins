@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#
+#/ command: jenkins:delete-job: "Deletes the specified job"
+#
+#/ usage: rerun jenkins:delete-job  --jobname <> [ --jenkins-url <http://localhost:8080>] [ --force <false>] 
+#
+#/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option variables: JOBNAME JENKINS_URL FORCE
+
+# Read module function library.
+. $RERUN_MODULE_DIR/lib/functions.sh || { 
+  echo >&2 "Failed loading function library." ; exit 1 ; 
+}
+
+# Error handling
+# ---------------
+# * Trap calls `rerun_die` with standard message.
+# * Exit upon command errors or accessing unset variables.
+#   * See [set](http://ss64.com/bash/set.html)
+trap 'rerun_die "*** command failed: jenkins:delete-job. ***"' ERR
+set -o nounset -o pipefail
+
+# Parse the command options.
+[[ -r $RERUN_MODULE_DIR/commands/delete-job/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/delete-job/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
+}
+
+
+# ------------------------------
+# Your implementation goes here.
+# ------------------------------
+
+if ! rc=$(curl -fs --data ""  "${JENKINS_URL}/job/${JOBNAME}/doDelete")$?
+then
+  if [[ $FORCE = "true" ]]
+  then
+    rc=0
+  fi
+fi
+
+exit $rc
+
+# Done

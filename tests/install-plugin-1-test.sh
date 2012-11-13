@@ -6,18 +6,34 @@
 #     rerun stubbs:test -m jenkins -p install-plugin
 #
 
-# Helpers
-# ------------
-
-rerun() {
-    command $RERUN -M $RERUN_MODULES "$@"
-}
+alias rerun="$RERUN -M $RERUN_MODULES"
 
 # The Plan
 # --------
 
 describe "install-plugin"
 
-it_runs_without_arguments() {
-    rerun jenkins:install-plugin
+it_fails_without_arguments() {
+    if ! rerun jenkins:install-plugin
+    then
+      exit 0
+    fi
+}
+
+it_installs_the_rundeck_plugin() {
+    if /sbin/chkconfig jenkins
+    then
+      rerun jenkins:start
+      rerun jenkins:install-plugin --plugin-name rundeck
+      rerun jenkins:stop
+    fi
+}
+
+it_installs_the_rundeck_plugin_and_restarts() {
+    if /sbin/chkconfig jenkins
+    then
+      rerun jenkins:start
+      rerun jenkins:install-plugin --plugin-name rundeck --restart true
+      rerun jenkins:stop
+    fi
 }

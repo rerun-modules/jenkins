@@ -6,18 +6,25 @@
 #     rerun stubbs:test -m jenkins -p configure-rundeck-plugin
 #
 
-# Helpers
-# ------------
-
-rerun() {
-    command $RERUN -M $RERUN_MODULES "$@"
-}
-
 # The Plan
 # --------
 
 describe "configure-rundeck-plugin"
 
 it_runs_without_arguments() {
-    rerun jenkins:configure-rundeck-plugin
+    if /sbin/chkconfig jenkins
+    then
+      rerun jenkins:start
+      rerun jenkins:configure-rundeck-plugin
+      rerun jenkins:stop
+    fi
+}
+
+it_run_with_restarting_jenkins() {
+    if /sbin/chkconfig jenkins
+    then
+      rerun jenkins:start
+      rerun jenkins:configure-rundeck-plugin --restart true
+      rerun jenkins:stop
+   fi
 }

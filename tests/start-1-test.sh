@@ -1,17 +1,10 @@
 #!/usr/bin/env roundup
 #
-# This file contains test scripts to run for the start command.
-# Execute it by invoking: 
+# This file contains the test plan for the start command.
+# Execute the plan by invoking: 
 #    
-#     rerun stubbs:test -m jenkins -c start
+#     rerun stubbs:test -m jenkins -p start
 #
-
-# Helpers
-# ------------
-
-rerun() {
-    command $RERUN -M $RERUN_MODULES "$@"
-}
 
 # The Plan
 # --------
@@ -19,5 +12,10 @@ rerun() {
 describe "start"
 
 it_runs_without_arguments() {
-    rerun jenkins:start
+    if /sbin/chkconfig jenkins
+    then
+      rerun jenkins:stop
+      rerun jenkins:start
+      rerun jenkins:stop
+    fi
 }

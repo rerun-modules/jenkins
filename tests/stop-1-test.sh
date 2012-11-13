@@ -1,17 +1,10 @@
 #!/usr/bin/env roundup
 #
-# This file contains test scripts to run for the stop command.
-# Execute it by invoking: 
+# This file contains the test plan for the stop command.
+# Execute the plan by invoking: 
 #    
-#     rerun stubbs:test -m jenkins -c stop
+#     rerun stubbs:test -m jenkins -p stop
 #
-
-# Helpers
-# ------------
-
-rerun() {
-    command $RERUN -M $RERUN_MODULES "$@"
-}
 
 # The Plan
 # --------
@@ -19,5 +12,8 @@ rerun() {
 describe "stop"
 
 it_runs_without_arguments() {
-    rerun jenkins:stop
+    if /sbin/chkconfig jenkins
+    then
+      rerun jenkins:stop
+    fi
 }
