@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+#/ command: jenkins:remove: "remove the jenkins installation"
+#
+#/ usage: rerun jenkins:remove [options]
+#
+#/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option variables: 
+
+# Read module function library.
+. $RERUN_MODULE_DIR/lib/functions.sh || { 
+  echo >&2 "Failed loading function library." ; exit 1 ; 
+}
+
+# Parse the command options.
+[[ -r $RERUN_MODULE_DIR/commands/remove/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/remove/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
+}
+
+
+# Error handling
+# ---------------
+# * Trap calls `rerun_die` with standard message.
+# * Exit upon command errors or accessing unset variables.
+#   * See [set](http://ss64.com/bash/set.html)
+trap 'rerun_die "*** command failed: jenkins:remove. ***"' ERR
+set -o nounset -o pipefail
+
+
+# ------------------------------
+# Your implementation goes here.
+# ------------------------------
+
+echo CLEANUP: ${CLEANUP}
+
+
+if [ "${CLEANUP}" = "true" ]
+then
+   #NOTE:  undo this:  sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+   #sudo rm -rf /var/lib/jenkins /var/log/jenkins
+   if [ -f /etc/sysconfig/jenkins ]
+   then
+      source /etc/sysconfig/jenkins
+   fi
+   if ! gpgKeyPackage=$(rpm -qa --queryformat '%{NAME}-%{VERSION}-%{SUMMARY}\n' gpg-pubkey* |grep 'Kohsuke Kawaguchi' |cut -d'(' -f1)
+   then
+      gpgKeyPackage=
+   fi
+fi
+
+sudo yum -y remove jenkins 
+
+
+if [ "${CLEANUP}" = "true" ]
+then
+   if [ -n "${gpgKeyPackage}" ]
+   then
+      sudo rpm -e "${gpgKeyPackage}"
+   fi
+
+   if [ -n "${JENKINS_HOME}" ]
+   then
+      sudo rm -rf "${JENKINS_HOME}" /var/cache/jenkins /var/log/jenkins
+   fi
+fi
+
+
+
+exit $?
+
+# Done
