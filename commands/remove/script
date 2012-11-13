@@ -34,16 +34,21 @@ set -o nounset -o pipefail
 
 echo CLEANUP: ${CLEANUP}
 
+JENKINS_HOME=
 
 if [ "${CLEANUP}" = "true" ]
 then
    #NOTE:  undo this:  sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
    #sudo rm -rf /var/lib/jenkins /var/log/jenkins
+   profileTmp=$(mktemp)
    if [ -f /etc/sysconfig/jenkins ]
    then
-      source /etc/sysconfig/jenkins
+      sudo cp /etc/sysconfig/jenkins "${profileTmp}"
+      sudo chmod 644  "${profileTmp}"
+      source  "${profileTmp}"
+      rm -f "${profileTmp}"
    fi
-   if ! gpgKeyPackage=$(rpm -qa --queryformat '%{NAME}-%{VERSION}-%{SUMMARY}\n' gpg-pubkey* |grep 'Kohsuke Kawaguchi' |cut -d'(' -f1)
+   if ! gpgKeyPackage=$(rpm -qa --queryformat '%{NAME}-%{VERSION}-%{SUMMARY}\n' gpg-pubkey* |grep 'Kohsuke Kawaguchi' |sed 's,-gpg(.*,,')
    then
       gpgKeyPackage=
    fi
@@ -61,7 +66,7 @@ then
 
    if [ -n "${JENKINS_HOME}" ]
    then
-      sudo rm -rf "${JENKINS_HOME}" /var/cache/jenkins /var/log/jenkins
+      sudo rm -rf "${JENKINS_HOME}" /var/cache/jenkins /var/log/jenkins /etc/yum.repos.d/jenkins.repo.rpmsave
    fi
 fi
 
