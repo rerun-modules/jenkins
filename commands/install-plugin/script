@@ -2,10 +2,10 @@
 #
 #/ command: jenkins:install-plugin: "Install plugin from the web"
 #
-#/ usage: rerun jenkins:install-plugin [ --restart|-r <false>] [ --jenkins-home|-j </var/lib/jenkins>] [ --plugin-url|-p <http://updates.jenkins-ci.org>]  --plugin-name|-p <> [ --plugin-version|-p <latest>] [ --jenkins-url|-j <http://localhost:8080>] 
+#/ usage: rerun jenkins:install-plugin [ --restart|-r <false>] [ --jenkins-home </var/lib/jenkins>] [ --plugin-url|-p <http://updates.jenkins-ci.org>]  --plugin-name|-p <> [ --plugin-version|-p <latest>]  --jenkins-url|-j <http://localhost:8080> [ --force <false>] 
 #
 #/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option variables: RESTART JENKINS_HOME PLUGIN_URL PLUGIN_NAME PLUGIN_VERSION JENKINS_URL
+#/ option variables: RESTART JENKINS_HOME PLUGIN_URL PLUGIN_NAME PLUGIN_VERSION JENKINS_URL FORCE
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
@@ -37,11 +37,14 @@ else
   exit 1
 fi
 
-sudo -u jenkins wget -O ${PLUGIN_NAME}.hpi ${PLUGIN_URL}/download/plugins/${PLUGIN_NAME}/${PLUGIN_VERSION}/${PLUGIN_NAME}.hpi
-
-if [[ "${RESTART}" = "true" ]]
+if [[ ! -e ${PLUGIN_NAME}.hpi || $FORCE = "true" ]]
 then
-  rerun jenkins:restart
+  sudo -u jenkins wget -O ${PLUGIN_NAME}.hpi ${PLUGIN_URL}/download/plugins/${PLUGIN_NAME}/${PLUGIN_VERSION}/${PLUGIN_NAME}.hpi
+
+  if [[ "${RESTART}" = "true" ]]
+  then
+    rerun jenkins:restart
+  fi
 fi
 
 exit $?
