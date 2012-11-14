@@ -1,29 +1,42 @@
 #!/usr/bin/env bash
 #
-#/ command: jenkins:create-job: ""Create a new job using the web API""
+#/ command: jenkins:create-job: "Create or update job using the web API"
 #
-#/ usage: rerun jenkins:create-job  --file|-f <>  --jobname|-j <> [ --jenkins-url|-u <http://localhost:8080/createItem>] 
+#/ usage: rerun jenkins:create-job [ --file <>]  --jobname <>  --jenkins-url|-j <http://localhost:8080>
 #
-#/ variables: FILE JOBNAME URL
+#/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option variables: FILE JOBNAME JENKINS_URL
 
 # Read module function library.
-. $RERUN_MODULE_DIR/lib/functions.sh || { 
-  echo >&2 "Failed loading function library" ; exit 1 ; 
+. $RERUN_MODULE_DIR/lib/functions.sh || {
+  echo >&2 "Failed loading function library." ; exit 1 ;
 }
+
+# Error handling
+# ---------------
+# * Trap calls `rerun_die` with standard message.
+# * Exit upon command errors or accessing unset variables.
+#   * See [set](http://ss64.com/bash/set.html)
+trap 'rerun_die "*** command failed: jenkins:create-job. ***"' ERR
+set -o nounset -o pipefail
 
 # Parse the command options.
-[ -r $RERUN_MODULE_DIR/commands/create-job/options.sh ] && {
-  . $RERUN_MODULE_DIR/commands/create-job/options.sh || exit 2 ;
+[[ -r $RERUN_MODULE_DIR/commands/create-job/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/create-job/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
 }
-
-# Exit immediately upon non-zero exit. See [set](http://ss64.com/bash/set.html)
-set -e
 
 # ------------------------------
 # Your implementation goes here.
 # ------------------------------
 
-curl --fail -H "Content-Type: text/xml" -s  --data "@${FILE}" "${URL}/createItem?name=${JOBNAME}"
+if ! rc=$(curl --fail -H "Content-Type: text/xml" -s  --data "@${FILE}" "${JENKINS_URL}/createItem?name=${JOBNAME}")$?
+then
+  if [[ $rc -eq 22 ]]
+  then
+    rerun jenkins:update-job --jobname ${JOBNAME} --file ${FILE}
+  fi
+fi
 
 exit $?
 
