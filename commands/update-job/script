@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-#/ command: jenkins:update-job: ""Update an existing job using the web API""
+#/ command: jenkins:update-job: "Update an existing job using the web API"
 #
-#/ usage: rerun jenkins:update-job  --file|-f <>  --jobname|-j <> [ --jenkins-url|-u <http://localhost:8080/createItem>] 
+#/ usage: rerun jenkins:update-job [ --file <>]  --jobname <> [ --jenkins-url <http://localhost:8080>] [ --username <>] [ --password <>] 
 #
 #/ variables: FILE JOBNAME URL
 
@@ -23,7 +23,13 @@ set -e
 # Your implementation goes here.
 # ------------------------------
 
-curl --fail -H "Content-Type: text/xml" -s  --data "@${FILE}" "${URL}/job/${JOBNAME}/config.xml"
+curlAuth=
+if [ -n "${USERNAME}" -a -n "${PASSWORD}" ]
+then
+   curlAuth="-u ${USERNAME}:${PASSWORD}"
+fi
+
+curl "${curlAuth}" --fail -H "Content-Type: text/xml" -s  --data "@${FILE}" "${URL}/job/${JOBNAME}/config.xml"
 
 exit $?
 

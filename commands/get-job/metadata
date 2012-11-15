@@ -3,4 +3,4 @@
 NAME=get-job
 DESCRIPTION="Get a job's configuration file using the web API"
 
-OPTIONS="file jobname jenkins-url"
+OPTIONS="file jobname jenkins-url username password"

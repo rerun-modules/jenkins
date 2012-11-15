@@ -2,10 +2,10 @@
 #
 #/ command: jenkins:create-job: "Create or update job using the web API"
 #
-#/ usage: rerun jenkins:create-job [ --file <>]  --jobname <>  --jenkins-url|-j <http://localhost:8080>
+#/ usage: rerun jenkins:create-job [ --file <>]  --jobname <> [ --jenkins-url <http://localhost:8080>] [ --file <>] [ --username <>] [ --password <>] 
 #
 #/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option variables: FILE JOBNAME JENKINS_URL
+#/ option variables: FILE JOBNAME JENKINS_URL FILE USERNAME PASSWORD
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || {
@@ -30,7 +30,13 @@ set -o nounset -o pipefail
 # Your implementation goes here.
 # ------------------------------
 
-if ! rc=$(curl --fail -H "Content-Type: text/xml" -s  --data "@${FILE}" "${JENKINS_URL}/createItem?name=${JOBNAME}")$?
+curlAuth=
+if [ -n "${USERNAME}" -a -n "${PASSWORD}" ]
+then
+   curlAuth="-u ${USERNAME}:${PASSWORD}"
+fi
+
+if ! rc=$(curl "${curlAuth}" --fail -H "Content-Type: text/xml" -s  --data "@${FILE}" "${JENKINS_URL}/createItem?name=${JOBNAME}")$?
 then
   if [[ $rc -eq 22 ]]
   then

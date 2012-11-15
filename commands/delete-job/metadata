@@ -3,4 +3,4 @@
 # Mon Nov 12 17:15:24 PST 2012
 NAME=delete-job
 DESCRIPTION="Deletes the specified job"
-OPTIONS="jobname jenkins-url force"
+OPTIONS="jobname jenkins-url force username password"

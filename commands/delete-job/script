@@ -2,10 +2,10 @@
 #
 #/ command: jenkins:delete-job: "Deletes the specified job"
 #
-#/ usage: rerun jenkins:delete-job  --jobname <> [ --jenkins-url <http://localhost:8080>] [ --force <false>] 
+#/ usage: rerun jenkins:delete-job  --jobname <> [ --jenkins-url <http://localhost:8080>] [ --force <false>] [ --username <>] [ --password <>] 
 #
 #/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option variables: JOBNAME JENKINS_URL FORCE
+#/ option variables: JOBNAME JENKINS_URL FORCE USERNAME PASSWORD
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
@@ -31,7 +31,13 @@ set -o nounset -o pipefail
 # Your implementation goes here.
 # ------------------------------
 
-if ! rc=$(curl -fs --data ""  "${JENKINS_URL}/job/${JOBNAME}/doDelete")$?
+curlAuth=
+if [ -n "${USERNAME}" -a -n "${PASSWORD}" ]
+then
+   curlAuth="-u ${USERNAME}:${PASSWORD}"
+fi
+
+if ! rc=$(curl "${curlAuth}" -fs --data ""  "${JENKINS_URL}/job/${JOBNAME}/doDelete")$?
 then
   if [[ $FORCE = "true" ]]
   then

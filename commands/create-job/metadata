@@ -3,4 +3,4 @@
 NAME=create-job
 DESCRIPTION="Create or update job using the web API"
 
-OPTIONS="file jobname jenkins-url file"
+OPTIONS="file jobname jenkins-url file username password"
