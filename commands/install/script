@@ -34,9 +34,9 @@ set -o nounset -o pipefail
 
 if ! rpm --quiet -q jenkins
 then
-  sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
-  sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
-  sudo yum -y install jenkins
+  sudo wget --quiet -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+  sudo rpm --quiet --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+  sudo yum --quiet -y install jenkins
 fi
 
 exit $?

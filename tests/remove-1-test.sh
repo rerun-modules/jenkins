@@ -12,14 +12,16 @@
 describe "remove"
 
 it_runs_without_arguments() {
-    rerun jenkins:install
+    rerun jenkins:deploy
+    rerun jenkins:remove
     rerun jenkins:remove
 
     test -f /etc/yum.repos.d/jenkins.repo.rpmsave  && { true; } || { false; }
 }
 
 it_runs_with_cleanup() {
-    rerun jenkins:install
+    rerun jenkins:deploy
+    rerun jenkins:remove --cleanup true
     rerun jenkins:remove --cleanup true
     
     test -e /var/cache/jenkins && { false; } || { true; }

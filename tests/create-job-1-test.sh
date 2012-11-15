@@ -19,7 +19,7 @@ it_fails_without_arguments() {
 }
 
 it_can_create_a_new_job() {
-    rerun jenkins:start
+    rerun jenkins:deploy
     rerun jenkins:delete-job --jobname rerun-hello-world --force true
     rerun jenkins:create-job --jobname rerun-hello-world --file $RERUN_MODULES/jenkins/examples/jobs/rerun-hello-world/config.xml
     rerun jenkins:delete-job --jobname rerun-hello-world 
@@ -27,7 +27,7 @@ it_can_create_a_new_job() {
 }
 
 it_updates_an_existing_job() {
-    rerun jenkins:start
+    rerun jenkins:deploy
     rerun jenkins:delete-job --jobname rerun-hello-world --force true
     rerun jenkins:create-job --jobname rerun-hello-world --file $RERUN_MODULES/jenkins/examples/jobs/rerun-hello-world/config.xml
     rerun jenkins:create-job --jobname rerun-hello-world --file $RERUN_MODULES/jenkins/examples/jobs/rerun-hello-world/config.xml
@@ -36,7 +36,7 @@ it_updates_an_existing_job() {
 }
 
 it_fails_creating_an_existing_job() {
-    rerun jenkins:start
+    rerun jenkins:deploy
     rerun jenkins:delete-job --jobname rerun-hello-world --force true
     rerun jenkins:create-job --jobname rerun-hello-world --file $RERUN_MODULES/jenkins/examples/jobs/rerun-hello-world/config.xml
 

@@ -12,8 +12,7 @@
 describe "stop"
 
 it_runs_without_arguments() {
-    if /sbin/chkconfig jenkins
-    then
-      rerun jenkins:stop
-    fi
+    rerun jenkins:deploy
+    rerun jenkins:stop
+    rerun jenkins:stop
 }

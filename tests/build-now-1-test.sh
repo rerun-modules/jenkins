@@ -19,7 +19,7 @@ it_fails_without_arguments() {
 }
 
 it_can_build_now() {
-    rerun jenkins:start
+    rerun jenkins:deploy
     rerun jenkins:delete-job --jobname rerun-hello-world --force true
     rerun jenkins:create-job --jobname rerun-hello-world --file $RERUN_MODULES/jenkins/examples/jobs/rerun-hello-world/config.xml
     rerun jenkins:build-now --jobname rerun-hello-world

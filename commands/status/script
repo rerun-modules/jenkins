@@ -32,7 +32,11 @@ set -o nounset -o pipefail
 # Your implementation goes here.
 # ------------------------------
 
-sudo /sbin/service jenkins status
+# Capture the init script's exit code without displaying superflous output.
+if ! rc=$(sudo /sbin/service jenkins status >/dev/null)$?
+then
+  exit $rc
+fi
 
 exit $?
 

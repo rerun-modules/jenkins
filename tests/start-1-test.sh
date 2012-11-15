@@ -12,10 +12,9 @@
 describe "start"
 
 it_runs_without_arguments() {
-    if /sbin/chkconfig jenkins
-    then
-      rerun jenkins:stop
-      rerun jenkins:start
-      rerun jenkins:stop
-    fi
+    rerun jenkins:deploy
+    rerun jenkins:stop
+    rerun jenkins:start
+    rerun jenkins:start
+    rerun jenkins:stop
 }

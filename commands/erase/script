@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-#/ command: jenkins:stop: "Stop Jenkins"
+#/ command: jenkins:erase: "Erase the Jenkins packages from the system"
 #
-#/ usage: rerun jenkins:stop [options]
+#/ usage: rerun jenkins:erase 
 #
 #/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
 #/ option variables: 
@@ -12,32 +12,30 @@
   echo >&2 "Failed loading function library." ; exit 1 ; 
 }
 
-# Parse the command options.
-[[ -r $RERUN_MODULE_DIR/commands/stop/options.sh ]] && {
-    . $RERUN_MODULE_DIR/commands/stop/options.sh || rerun_die "Failed loading options parser."
-    rerun_options_parse "$@"
-}
-
-
 # Error handling
 # ---------------
 # * Trap calls `rerun_die` with standard message.
 # * Exit upon command errors or accessing unset variables.
 #   * See [set](http://ss64.com/bash/set.html)
-trap 'rerun_die "*** command failed: jenkins:stop. ***"' ERR
+trap 'rerun_die "*** command failed: jenkins:erase. ***"' ERR
 set -o nounset -o pipefail
+
+# Parse the command options.
+[[ -r $RERUN_MODULE_DIR/commands/erase/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/erase/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
+}
 
 
 # ------------------------------
 # Your implementation goes here.
 # ------------------------------
 
-if /sbin/chkconfig jenkins
+sudo yum --quiet -y erase jenkins
+
+if gpgKeyPackage=$(rpm -qa --queryformat '%{NAME}-%{VERSION}-%{SUMMARY}\n' gpg-pubkey* |grep 'Kohsuke Kawaguchi' |sed 's,-gpg(.*,,')
 then
-  if rerun jenkins:status
-  then
-    sudo /sbin/service jenkins stop
-  fi
+  sudo rpm -e "${gpgKeyPackage}"
 fi
 
 exit $?

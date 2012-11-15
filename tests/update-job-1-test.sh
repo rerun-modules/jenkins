@@ -11,10 +11,6 @@
 
 describe "update-job"
 
-before() {
-    rerun jenkins:start
-}
-
 it_fails_without_arguments() {
     if ! rerun jenkins:update-job
     then
@@ -23,21 +19,22 @@ it_fails_without_arguments() {
 }
 
 it_can_update_an_existing_job() {
+    rerun jenkins:deploy
     rerun jenkins:delete-job --jobname rerun-hello-world --force true
     rerun jenkins:create-job --jobname rerun-hello-world --file $RERUN_MODULES/jenkins/examples/jobs/rerun-hello-world/config.xml
     rerun jenkins:update-job --jobname rerun-hello-world --file $RERUN_MODULES/jenkins/examples/jobs/rerun-hello-world/config.xml
     rerun jenkins:delete-job --jobname rerun-hello-world
+    rerun jenkins:stop
 }
 
 it_fails_updating_a_non_existing_job() {
+    rerun jenkins:deploy
     rerun jenkins:delete-job --jobname rerun-hello-world --force true
 
     if ! rerun jenkins:update-job --jobname rerun-hello-world --file $RERUN_MODULES/jenkins/examples/jobs/rerun-hello-world/config.xml
     then
       exit 0
     fi
-}
 
-after() {
     rerun jenkins:stop
 }

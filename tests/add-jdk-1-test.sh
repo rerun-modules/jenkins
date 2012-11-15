@@ -25,8 +25,7 @@ it_can_create_default_jdk_home() {
       rerun_die "cannot find xmlstarlet"
    fi
 
-    rerun jenkins:install
-    rerun jenkins:start
+    rerun jenkins:deploy
     rerun jenkins:reload
 
     rerun jenkins:add-jdk --jenkins-home ${JENKINS_HOME}
@@ -46,5 +45,4 @@ it_can_create_default_jdk_home() {
     fi
 
     rerun jenkins:stop
-    rerun jenkins:remove --cleanup true
 }

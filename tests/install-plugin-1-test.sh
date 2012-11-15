@@ -21,29 +21,20 @@ it_fails_without_arguments() {
 }
 
 it_installs_the_rundeck_plugin() {
-    if /sbin/chkconfig jenkins
-    then
-      rerun jenkins:start
-      rerun jenkins:install-plugin --plugin-name rundeck
-      rerun jenkins:stop
-    fi
+    rerun jenkins:deploy
+    rerun jenkins:install-plugin --plugin-name rundeck
+    rerun jenkins:stop
 }
 
 it_forces_installation_of_the_rundeck_plugin() {
-    if /sbin/chkconfig jenkins
-    then
-      rerun jenkins:start
-      rerun jenkins:install-plugin --plugin-name rundeck
-      rerun jenkins:install-plugin --plugin-name rundeck --force true
-      rerun jenkins:stop
-    fi
+    rerun jenkins:deploy
+    rerun jenkins:install-plugin --plugin-name rundeck
+    rerun jenkins:install-plugin --plugin-name rundeck --force true
+    rerun jenkins:stop
 }
 
 it_installs_the_rundeck_plugin_and_restarts() {
-    if /sbin/chkconfig jenkins
-    then
-      rerun jenkins:start
-      rerun jenkins:install-plugin --plugin-name rundeck --restart true
-      rerun jenkins:stop
-    fi
+    rerun jenkins:deploy
+    rerun jenkins:install-plugin --plugin-name rundeck --restart true
+    rerun jenkins:stop
 }

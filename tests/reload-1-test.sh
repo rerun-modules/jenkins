@@ -12,7 +12,7 @@
 describe "reload"
 
 it_runs_without_arguments() {
-    rerun jenkins:start
+    rerun jenkins:deploy
     rerun jenkins:reload
     rerun jenkins:stop
 }

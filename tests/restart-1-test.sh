@@ -12,9 +12,7 @@
 describe "restart"
 
 it_runs_without_arguments() {
-    if /sbin/chkconfig jenkins
-    then
-      rerun jenkins:restart
-      rerun jenkins:stop
-    fi
+    rerun jenkins:deploy
+    rerun jenkins:restart
+    rerun jenkins:stop
 }
