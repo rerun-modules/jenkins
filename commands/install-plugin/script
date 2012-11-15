@@ -39,7 +39,7 @@ fi
 
 if [[ ! -e ${PLUGIN_NAME}.hpi || $FORCE = "true" ]]
 then
-  sudo -u jenkins wget -O ${PLUGIN_NAME}.hpi ${PLUGIN_URL}/download/plugins/${PLUGIN_NAME}/${PLUGIN_VERSION}/${PLUGIN_NAME}.hpi
+  sudo -u jenkins wget --quiet -O ${PLUGIN_NAME}.hpi ${PLUGIN_URL}/download/plugins/${PLUGIN_NAME}/${PLUGIN_VERSION}/${PLUGIN_NAME}.hpi
 
   if [[ "${RESTART}" = "true" ]]
   then
