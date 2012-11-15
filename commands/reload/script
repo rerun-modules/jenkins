@@ -2,10 +2,10 @@
 #
 #/ command: jenkins:reload: "reload the jenkins configuration"
 #
-#/ usage: rerun jenkins:reload [options]
+#/ usage: rerun jenkins:reload [ --jenkins-url <http://localhost:8080>] [ --jenkins-home </var/lib/jenkins>] 
 #
 #/ rerun env variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
-#/ option variables: 
+#/ option variables: JENKINS_URL JENKINS_HOME
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 

@@ -12,9 +12,7 @@
 describe "reload"
 
 it_runs_without_arguments() {
-    rerun jenkins:install
     rerun jenkins:start
     rerun jenkins:reload
     rerun jenkins:stop
-    rerun jenkins:remove --cleanup true
 }
