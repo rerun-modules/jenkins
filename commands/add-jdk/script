@@ -34,7 +34,7 @@ set -o nounset -o pipefail
 
 if [ ! -f "${JENKINS_HOME}/config.xml" ]
 then
-   rerun_die "configuration file ${JENKINS_HOME}/config.xml does not appear to exist"
+   rerun jenkins: reload
 fi
 
 XMLSTARLET=$(which xmlstarlet)
@@ -86,6 +86,7 @@ then
       echo "unable to overwrite ${JENKINS_HOME}/config.xml" 1>&2
       exit 1
    fi
+   rerun jenkins:reload
 else
    echo "WARNING, ${JENKINS_HOME}/config.xml appears unchanged, will not overwrite" 1>&2
 fi
