@@ -86,6 +86,7 @@ then
       echo "unable to overwrite ${JENKINS_HOME}/config.xml" 1>&2
       exit 1
    fi
+   rerun jenkins:reload
 else
    echo "WARNING, ${JENKINS_HOME}/config.xml appears unchanged, will not overwrite" 1>&2
 fi
