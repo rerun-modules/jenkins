@@ -36,7 +36,6 @@ echo reloading $JENKINS_URL
 
 curl -s -k -f $JENKINS_URL/reload
 
-JENKINS_HOME=/var/lib/jenkins
 timeout 30 bash -c 'while [ 1 ]; do test -f ${JENKINS_HOME}/config.xml && { break; }; sleep 1; done'
 
 exit $?
