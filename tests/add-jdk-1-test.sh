@@ -29,8 +29,6 @@ it_can_create_default_jdk_home() {
     rerun jenkins:start
     rerun jenkins:reload
 
-    timeout 30 bash -c 'while [ 1 ]; do test -f ${JENKINS_HOME}/config.xml && { break; }; sleep 1; done' 
-
     rerun jenkins:add-jdk --jenkins-home ${JENKINS_HOME}
 
     rerun jenkins: add-jdk: --jdk-name java-sdk-new --jdk-home /tmp/myjdk --jenkins-home "${JENKINS_HOME}"
