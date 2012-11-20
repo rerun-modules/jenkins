@@ -4,17 +4,27 @@
 #
 #/ usage: rerun jenkins:update-job [ --file <>]  --jobname <> [ --jenkins-url <http://localhost:8080>] [ --username <>] [ --password <>] 
 #
-#/ variables: FILE JOBNAME URL
+#/ variables: FILE JOBNAME JENKINS_URL
 
 # Read module function library.
 . $RERUN_MODULE_DIR/lib/functions.sh || { 
   echo >&2 "Failed loading function library" ; exit 1 ; 
 }
 
+# Error handling
+# ---------------
+# * Trap calls `rerun_die` with standard message.
+# * Exit upon command errors or accessing unset variables.
+#   * See [set](http://ss64.com/bash/set.html)
+trap 'rerun_die "*** command failed: jenkins:update-job. ***"' ERR
+set -o nounset -o pipefail
+
 # Parse the command options.
-[ -r $RERUN_MODULE_DIR/commands/update-job/options.sh ] && {
-  . $RERUN_MODULE_DIR/commands/update-job/options.sh || exit 2 ;
+[[ -r $RERUN_MODULE_DIR/commands/update-job/options.sh ]] && {
+    . $RERUN_MODULE_DIR/commands/update-job/options.sh || rerun_die "Failed loading options parser."
+    rerun_options_parse "$@"
 }
+
 
 # Exit immediately upon non-zero exit. See [set](http://ss64.com/bash/set.html)
 set -e
@@ -29,7 +39,7 @@ then
    curlAuth="-u ${USERNAME}:${PASSWORD}"
 fi
 
-curl "${curlAuth}" --fail -H "Content-Type: text/xml" -s  --data "@${FILE}" "${URL}/job/${JOBNAME}/config.xml"
+curl "${curlAuth}" --fail -H "Content-Type: text/xml" -s  --data "@${FILE}" "${JENKINS_URL}/job/${JOBNAME}/config.xml"
 
 exit $?
 
