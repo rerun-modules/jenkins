@@ -4,7 +4,7 @@ Rerun Jenkins module
 Installation
 ------------
 
-* Install Rerun itself by the latest "rerun" RPM package link from [Rerun Downloads](https://github.com/rerun/rerun/downloads) page and executing the following command (replacing example URL):
+* Install Rerun itself by obtaining the latest "rerun" RPM package link from [Rerun Downloads](https://github.com/rerun/rerun/downloads) page and executing the following command (replacing example URL):
 <pre>
 [root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
 Retrieving https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
