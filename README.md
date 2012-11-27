@@ -12,7 +12,7 @@ Preparing...                ########################################### [100%]
    1:rerun                  ########################################### [100%]
 </pre>
 
-* Install the latest version of the rerun-modules Yum repo definition by obtaining the latest "rerun-modules-repo" RPM package link from [Rerun Modules Downloads](https://github.com/rerun-modules/rerun-modules/downloads) and executing the following command (replacing example URL): 
+* Install the latest version of the rerun-modules Yum repo definition by obtaining the latest "rerun-modules-repo" (not "<i>rerun-modules-yum-repo</i>")  RPM package link from [Rerun Modules Downloads](https://github.com/rerun-modules/rerun-modules/downloads) and executing the following command (replacing example URL): 
 <pre>
 [root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun-modules/rerun-modules/rerun-modules-repo-1.0-21.noarch.rpm
 Retrieving https://github.com/downloads/rerun-modules/rerun-modules/rerun-modules-repo-1.0-21.noarch.rpm
