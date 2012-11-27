@@ -1,66 +1,49 @@
-jenkins
-=======
+Rerun Jenkins module
+====================
 
-Rerun module to manage Jenkins installation, configuration and operations
+Installation
+------------
 
+* Install Rerun itself by the latest "rerun" RPM package link from [Rerun Downloads](https://github.com/rerun/rerun/downloads) page and executing the following command (replacing example URL):
 <pre>
-[anthony@centos62-dukesbank-rerun modules]$ rerun jenkins
-Available commands in module, "./jenkins":
-add-jdk: "Adds a JDK installation to the Jenkins configuration"
-   [ --jdk-name|-j <java-sdk>]: "Name of the JDK to add"
-   [ --jdk-home|-j </etc/alternatives/java_sdk>]: "JAVA_HOME of the JDK installation"
-   [ --jenkins-home </var/lib/jenkins>]: "JENKINS_HOME directory"
-add-maven: "Adds a Maven installation to the Jenkins configuration"
-   [ --maven-name|-m <maven>]: "Maven installation name"
-   [ --maven-home|-m </usr/share/maven>]: "MAVEN_HOME of the installation"
-   [ --jenkins-home </var/lib/jenkins>]: "JENKINS_HOME directory"
-   [ --restart|-r <false>]: "Whether or not to immediately restart Jenkins"
-build-now: "Perform a build of the specified job"
-    --jobname <>: "Job name"
-   [ --jenkins-url <http://localhost:8080>]: "url of the jenkins server"
-configure-rundeck-plugin: "Configure the Jenkins Rundeck plugin"
-   [ --restart|-r <false>]: "Whether or not to immediately restart Jenkins"
-   [ --jenkins-home </var/lib/jenkins>]: "JENKINS_HOME directory"
-   [ --rundeck-username|-r <admin>]: "User name for Rundeck API access"
-   [ --rundeck-password|-r <admin>]: "Password for Rundeck API access"
-   [ --rundeck-url|-r <http://localhost:4440>]: "URL for Rundeck API access"
-create-job: "Create or update job using the web API"
-   [ --file <>]: "Configuration XML file that defines the job"
-    --jobname <>: "Job name"
-   [ --jenkins-url <http://localhost:8080>]: "url of the jenkins server"
-   [ --file <>]: "Configuration XML file that defines the job"
-delete-job: "Deletes the specified job"
-    --jobname <>: "Job name"
-   [ --jenkins-url <http://localhost:8080>]: "url of the jenkins server"
-   [ --force <false>]: "Force the command to succeed"
-get-job: "Get a job's configuration file using the web API"
-   [ --file <>]: "Configuration XML file that defines the job"
-    --jobname <>: "Job name"
-   [ --jenkins-url <http://localhost:8080>]: "url of the jenkins server"
-install-plugin: "Install plugin from the web"
-   [ --restart|-r <false>]: "Whether or not to immediately restart Jenkins"
-   [ --jenkins-home </var/lib/jenkins>]: "JENKINS_HOME directory"
-   [ --plugin-url|-p <http://updates.jenkins-ci.org>]: "Jenkins plugin web site"
-    --plugin-name|-p <>: "Name of the plugin to install"
-   [ --plugin-version|-p <latest>]: "Version of the plugin to install"
-   [ --jenkins-url <http://localhost:8080>]: "url of the jenkins server"
-   [ --force <false>]: "Force the command to succeed"
-install: "Install Jenkins"
-reload: "reload the jenkins configuration"
-   [ --jenkins-url <http://localhost:8080>]: "url of the jenkins server"
-remove: "remove the jenkins installation"
-    --cleanup|-c <false>: "wipe jenkins clean after package removal, including logs and remaining configuration"
-restart: "Restart Jenkins"
-start: "Start Jenkins"
-   [ --jenkins-log|-j </var/log/jenkins/jenkins.log>]: "Jenkins log file"
-   [ --count|-c <60>]: "Number of times to try the startup test"
-   [ --interval|-i <1>]: "Number of seconds between startup tests"
-status: "Check Jenkins"
-stop: "Stop Jenkins"
-update-job: "Update an existing job using the web API"
-   [ --file <>]: "Configuration XML file that defines the job"
-    --jobname <>: "Job name"
-   [ --jenkins-url <http://localhost:8080>]: "url of the jenkins server"
+[root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
+Retrieving https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
+Preparing...                ########################################### [100%]
+   1:rerun                  ########################################### [100%]
 </pre>
 
-Note that several commands rely on xmlstarlet(1) (which is available from [EPEL](http://fedoraproject.org/wiki/EPEL)).
+* Install the latest version of the rerun-modules Yum repo definition by obtaining the latest "rerun-modules-repo" RPM package link from [Rerun Modules Downloads](https://github.com/rerun-modules/rerun-modules/downloads) and executing the following command (replacing example URL): 
+<pre>
+[root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun-modules/rerun-modules/rerun-modules-repo-1.0-21.noarch.rpm
+Retrieving https://github.com/downloads/rerun-modules/rerun-modules/rerun-modules-repo-1.0-21.noarch.rpm
+Preparing...                ########################################### [100%]
+   1:rerun-modules-repo     ########################################### [100%]
+</pre>
+
+* Install all the latest rerun modules (including this Jenkins module):
+<pre>
+[root@centos62 ~]# yum -y --disablerepo '*' --enablerepo 'rerun-modules' install '*'
+.
+.
+.
+Complete!
+</pre>
+
+* Review the available modules:
+<pre>
+[root@centos62 ~]# which rerun
+/usr/bin/rerun
+[root@centos62 ~]# rerun
+Available modules in "/usr/lib/rerun/modules":
+  apache-maven: "Rerun module to manage the apache-maven distribution"
+  github: "Rerun module to manage working with Github"
+  jboss-as: "Rerun module to manage working with the JBoss application server"
+  jenkins: "Rerun module to manage Jenkins installation, configuration and operations"
+  mysql: "Rerun module to manage working with the MySQL database server"
+  rpm: "Manage the full life-cycle of RPM packages"
+  rundeck: "Rerun module to manage Rundeck installation configuration and operations"
+  ssh: "Rerun module for managing secure shell client and server usage"
+  stubbs: "Simple rerun module builder"
+</pre>
+
+* Note that several commands rely on xmlstarlet(1) (which is available from [EPEL](http://fedoraproject.org/wiki/EPEL)).
