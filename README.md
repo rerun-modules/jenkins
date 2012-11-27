@@ -1,10 +1,7 @@
-Rerun Jenkins module
-====================
-
 Installation
 ------------
 
-* Install Rerun itself by obtaining the latest "rerun" RPM package link from [Rerun Downloads](https://github.com/rerun/rerun/downloads) page and executing the following command (replacing example URL):
+* Install [Rerun](http://rerun.github.com/rerun) itself by obtaining the latest "rerun" RPM package link from [Rerun Downloads](https://github.com/rerun/rerun/downloads) page and executing the following command (replacing example URL):
 <pre>
 [root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
 Retrieving https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
@@ -29,7 +26,7 @@ Preparing...                ########################################### [100%]
 Complete!
 </pre>
 
-* Review the available modules:
+* Review the available modules. e.g:
 <pre>
 [root@centos62 ~]# which rerun
 /usr/bin/rerun
@@ -46,4 +43,14 @@ Available modules in "/usr/lib/rerun/modules":
   stubbs: "Simple rerun module builder"
 </pre>
 
-* Note that several commands rely on xmlstarlet(1) (which is available from [EPEL](http://fedoraproject.org/wiki/EPEL)).
+* Note that several commands rely on xmlstarlet(1) which is available or installation from [EPEL](http://fedoraproject.org/wiki/EPEL):
+
+<pre>
+[root@centos62 ~]# yum -y install xmlstarlet
+.
+.
+.
+Complete!
+</pre>
+
+
