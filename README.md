@@ -1,4 +1,4 @@
-This [Rerun](http://rerun.github.com/rerun) module automates installation and management of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
+This [Rerun](http://rerun.github.com/rerun) module automates installation, management and operations of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
 
 The Jenkins instance deployed by the module does not have authentication, authorization and access control enabled and has no provision for automicatically configuring agents.
 
@@ -7,6 +7,16 @@ The commands are written with the expectation that they will be run by a non-roo
 The module has the ability to deploy and remove the Jenkins instance as well as managing its operation and configuration.
 
 Additionally, the module can manage the full-lifecyle of individual jobs.
+
+* Use jenkins:deploy and jenkins:remove to create and destroy the Jenkins instance
+* Use jenkins:start, jenkins:stop, jenkins:status, jenkins:restart to manage the running Jenkins instance
+* Use jenkins:add-jdk and jenkins:add-maven to manage configuring new installations in the Jenkins instance
+* Use jenkins:install-plugin to automate plugin installation
+* Use jenkins:configure-rundeck-plugin to configure the Jenkins Rundeck plugin.
+* Use jenkins:get-job, jenkins:create-job, jenkins:update-job and jenkins:delete-job to manage jobs as XML source
+* Use jenkins:build-now to force a job to build immediately
+
+Consult README.md in the command and options directories for further description of using these commands.
 
 Requirements
 ------------
@@ -85,15 +95,3 @@ Available modules in "/usr/lib/rerun/modules":
 Complete!
 </pre>
 
-Usage
------
-
-* Use jenkins:deploy and jenkins:remove to create and destroy the Jenkins instance
-* Use jenkins:start, jenkins:stop, jenkins:status, jenkins:restart to manage the running Jenkins instance
-* Use jenkins:add-jdk and jenkins:add-maven to manage configuring new installations in the Jenkins instance
-* Use jenkins:install-plugin to automate plugin installation
-* Use jenkins:configure-rundeck-plugin to configure the Jenkins Rundeck plugin.
-* Use jenkins:get-job, jenkins:create-job, jenkins:update-job and jenkins:delete-job to manage jobs as XML source
-* Use jenkins:build-now to force a job to build immediately
-
-Consult README.md in the command and options directories for further description of using these commands.
