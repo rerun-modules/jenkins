@@ -32,6 +32,7 @@ sudo yum
 
 Installation
 ------------
+The following instruction describe how to install Rerun itself and the set of modules necessary to use the Jenkins module (and more!):
 
 * Install [Rerun](http://rerun.github.com/rerun) itself by obtaining the latest "rerun" RPM package link from [Rerun Downloads](https://github.com/rerun/rerun/downloads) page and executing the following command (replacing example URL):
 <pre>
