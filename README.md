@@ -32,30 +32,7 @@ Installation
 ------------
 The following instructions describe how to install Rerun itself and the set of modules necessary to use the Jenkins module (and more!):
 
-* Install [Rerun](http://rerun.github.com/rerun) itself by obtaining the latest "rerun" RPM package link from [Rerun Downloads](https://github.com/rerun/rerun/downloads) page and executing the following command (replacing example URL):
-<pre>
-[root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
-Retrieving https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
-Preparing...                ########################################### [100%]
-   1:rerun                  ########################################### [100%]
-</pre>
-
-* Install the latest version of the rerun-modules Yum repo definition by obtaining the latest "rerun-modules-repo" (<i>not</i> "rerun-modules-yum-repo")  RPM package link from [Rerun Modules Downloads](https://github.com/rerun-modules/rerun-modules/downloads) and executing the following command (replacing example URL): 
-<pre>
-[root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun-modules/rerun-modules/rerun-modules-repo-1.0-21.noarch.rpm
-Retrieving https://github.com/downloads/rerun-modules/rerun-modules/rerun-modules-repo-1.0-21.noarch.rpm
-Preparing...                ########################################### [100%]
-   1:rerun-modules-repo     ########################################### [100%]
-</pre>
-
-* Install all the latest rerun modules (including this Jenkins module):
-<pre>
-[root@centos62 ~]# yum -y --disablerepo '*' --enablerepo 'rerun-modules' install '*'
-.
-.
-.
-Complete!
-</pre>
+* Install the latest [Rerun](http://rerun.github.com/rerun) and Rerun modules by following the [Rerun installation](https://github.com/rerun/rerun/wiki/Installation)
 
 * Review the available modules. e.g:
 <pre>
