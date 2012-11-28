@@ -1,7 +1,4 @@
-Description
------------
-
-This module manages the installation of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
+This module automates management the installation of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
 
 The Jenkins instance deployed by the module does not have authentication, authorization and access control enabled and has no provision for automicatically configuring agents.
 
@@ -15,7 +12,6 @@ Requirements
 ------------
 
 * Internet access to acquire installation RPMs 
-* A system with at least 512MB of memory and 512MB disk (and <i>much</i> more to handle builds themselves!)
 * A Red Hat/CentOS 5 or 6 instance
 * No service running on port 8080 and no firewall blocking that port
 
@@ -32,6 +28,7 @@ sudo test
 sudo wget
 sudo yum
 </pre>
+... or simply add the user to the "wheel" group and enable carte-blanche.
 
 Installation
 ------------
@@ -97,5 +94,3 @@ Usage
 * Use jenkins:configure-rundeck-plugin to configure the Jenkins Rundeck plugin.
 * Use jenkins:get-job, jenkins:create-job, jenkins:update-job and jenkins:delete-job to manage jobs as XML source
 * Use jenkins:build-now to force a job to build immediately
-
-Anthony Shortland (anthony@dtosolutions.com)
