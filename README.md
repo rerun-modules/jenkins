@@ -20,7 +20,6 @@ Requirements
 * No service running on port 8080 and no firewall blocking that port
 
 * A non-root user with the following level of non-interactive sudo(8) access:
-
 <pre>
 sudo -u jenkins /bin/sh
 sudo -u jenkins wget
