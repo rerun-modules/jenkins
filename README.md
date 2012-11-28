@@ -1,4 +1,4 @@
-This module automates installation and management of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
+This [Rerun](http://rerun.github.com/rerun) module automates installation and management of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
 
 The Jenkins instance deployed by the module does not have authentication, authorization and access control enabled and has no provision for automicatically configuring agents.
 
@@ -95,3 +95,5 @@ Usage
 * Use jenkins:configure-rundeck-plugin to configure the Jenkins Rundeck plugin.
 * Use jenkins:get-job, jenkins:create-job, jenkins:update-job and jenkins:delete-job to manage jobs as XML source
 * Use jenkins:build-now to force a job to build immediately
+
+Consult README.md in the command and options directories for further description of using these commands.
