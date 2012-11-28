@@ -3,4 +3,4 @@
 # Mon Nov 12 13:47:12 PST 2012
 NAME=status
 DESCRIPTION="Check Jenkins"
-OPTIONS=
+OPTIONS=""

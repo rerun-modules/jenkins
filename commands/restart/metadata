@@ -3,4 +3,4 @@
 # Mon Nov 12 13:47:24 PST 2012
 NAME=restart
 DESCRIPTION="Restart Jenkins"
-OPTIONS=
+OPTIONS=""

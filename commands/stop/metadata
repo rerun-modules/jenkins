@@ -3,4 +3,4 @@
 # Mon Nov 12 13:47:03 PST 2012
 NAME=stop
 DESCRIPTION="Stop Jenkins"
-OPTIONS=
+OPTIONS=""
