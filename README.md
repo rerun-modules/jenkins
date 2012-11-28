@@ -1,3 +1,5 @@
+Do you drink your own Kool-Aid and manage your Jenkins jobs in a CI loop? Shame on you if you're not ready to blow away your Jenkins setup at any moment and rebuild it <i>automatically</i> from source!
+
 This [Rerun](http://rerun.github.com/rerun) module automates standard practice for installation, management and operations of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
 
 The Jenkins instance deployed by the module does not have authentication, authorization and access control enabled and has no provision for automicatically configuring agents.
