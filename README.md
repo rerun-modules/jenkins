@@ -24,21 +24,7 @@ Requirements
 * Internet access to acquire installation RPMs 
 * A Red Hat/CentOS 5 or 6 instance
 * No service running on port 8080 and no firewall blocking that port
-
-* A non-root user with the following level of non-interactive sudo(8) access:
-<pre>
-sudo -u jenkins /bin/sh
-sudo -u jenkins wget
-sudo /sbin/service jenkins
-sudo cp
-sudo rm
-sudo rpm 
-sudo tail
-sudo test
-sudo wget
-sudo yum
-</pre>
-... or simply add the user to the "wheel" group and enable carte-blanche access.
+* A non-root user that has non-interactive sudo(8) access to run "sh" and "wget" as the "jenkins" user and the "cp", "rm", "rpm", "service", "tail", "test", "wget" and "yum" commands as the "root" user (or simply add the user to the "wheel" group and enable carte-blanche access ;-).
 
 Installation
 ------------
