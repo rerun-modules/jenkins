@@ -2,4 +2,5 @@
 # Sun Sep 16 22:00:25 PDT 2012
 NAME=jenkins
 DESCRIPTION="Rerun module to manage Jenkins installation, configuration and operations"
-
+VERSION=
+REQUIRES=
