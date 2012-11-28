@@ -1,13 +1,13 @@
 Description
 -----------
 
-This module manages the installation of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora distribution](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
+This module manages the installation of [Jenkins](http://jenkins-ci.org) based on the [Red Hat/CentOS/Fedora](http://pkg.jenkins-ci.org/redhat) distribution that results in the instance running as the jenkins user out of /var/lib/jenkins.
 
 The Jenkins instance deployed by the module does not have authentication, authorization and access control enabled and has no provision for automicatically configuring agents.
 
 The commands are written with the expectation that they will be run by a non-root user that has sudo(8) access to run a number of commands (listed below).
 
-The module has the ability to deploy and remove a Jenkins instance as well as managing its operation and configuration.
+The module has the ability to deploy and remove the Jenkins instance as well as managing its operation and configuration.
 
 Additionally, the module can manage the full-lifecyle of individual jobs.
 
@@ -16,7 +16,7 @@ Requirements
 
 * Internet access to acquire installation RPMs 
 * A system with at least 512MB of memory and 512MB disk (and <i>much</i> more to handle builds themselves!)
-* A Red Hat/CentOS 5 and 6 instance
+* A Red Hat/CentOS 5 or 6 instance
 * No service running on port 8080 and no firewall blocking that port
 
 * A non-root user with the following level of non-interactive sudo(8) access:
@@ -32,28 +32,6 @@ sudo test
 sudo wget
 sudo yum
 </pre>
-
-Installation
-------------
-
-* Install [Rerun](http://rerun.github.com/rerun) itself by obtaining the latest "rerun" RPM package link from [Rerun Downloads](https://github.com/rerun/rerun/downloads) page and executing the following command (replacing example URL):
-<pre>
-[root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
-Retrieving https://github.com/downloads/rerun/rerun/rerun-1.0-124.noarch.rpm
-Preparing...                ########################################### [100%]
-   1:rerun                  ########################################### [100%]
-</pre>
-
-* Install the latest version of the rerun-modules Yum repo definition by obtaining the latest "rerun-modules-repo" (<i>not</i> "rerun-modules-yum-repo")  RPM package link from [Rerun Modules Downloads](https://github.com/rerun-modules/rerun-modules/downloads) and executing the following command (replacing example URL): 
-<pre>
-[root@centos62 ~]# rpm -Uvh https://github.com/downloads/rerun-modules/rerun-modules/rerun-modules-repo-1.0-21.noarch.rpm
-Retrieving https://github.com/downloads/rerun-modules/rerun-modules/rerun-modules-repo-1.0-21.noarch.rpm
-Preparing...                ########################################### [100%]
-   1:rerun-modules-repo     ########################################### [100%]
-Requirements
-------------
-
-This modules implements a standalon
 
 Installation
 ------------
