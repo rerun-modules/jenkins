@@ -28,7 +28,7 @@ sudo test
 sudo wget
 sudo yum
 </pre>
-... or simply add the user to the "wheel" group and enable carte-blanche.
+... or simply add the user to the "wheel" group and enable carte-blanche access.
 
 Installation
 ------------
