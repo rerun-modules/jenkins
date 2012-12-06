@@ -4,4 +4,4 @@ NAME=jenkins
 DESCRIPTION="Rerun module to manage Jenkins installation, configuration and operations"
 VERSION=1.0.1
 REQUIRES=
-EXTERNALS=
+EXTERNALS=xmlstarlet
